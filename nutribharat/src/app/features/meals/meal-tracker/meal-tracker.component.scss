@@ -1,0 +1,16 @@
+h2 {
+  color: #064e3b; // dark emerald
+}
+
+h3 {
+  color: #065f46;
+}
+
+button {
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  text-decoration: underline;
+  color: #b91c1c; // stronger red
+}

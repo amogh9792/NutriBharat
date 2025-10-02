@@ -1,0 +1,101 @@
+<!-- BMI Calculator Card -->
+<div class="p-6 bg-gradient-to-r from-emerald-500 to-green-600 text-white rounded-xl shadow-md mb-6">
+  <h2 class="text-2xl font-bold mb-4">⚖️ Your BMI & Calorie Needs</h2>
+
+  <div class="grid grid-cols-3 gap-4">
+    <div>
+      <label class="block text-sm font-medium">Height (cm)</label>
+      <input type="number" [(ngModel)]="height" min="100" max="250"
+             class="mt-1 w-full border rounded-md p-2 text-black" />
+    </div>
+    <div>
+      <label class="block text-sm font-medium">Weight (kg)</label>
+      <input type="number" [(ngModel)]="weight" min="30" max="250"
+             class="mt-1 w-full border rounded-md p-2 text-black" />
+    </div>
+    <div>
+      <label class="block text-sm font-medium">Age (years)</label>
+      <input type="number" [(ngModel)]="age" min="10" max="100"
+             class="mt-1 w-full border rounded-md p-2 text-black" />
+    </div>
+  </div>
+
+  <div class="mt-4">
+    <p class="text-lg">📊 <strong>BMI:</strong> {{ bmi.toFixed(1) }} ({{ bmiCategory }})</p>
+    <p>🔥 <strong>Maintenance:</strong> {{ calorieNeeds.maintenance }} kcal/day</p>
+    <p>💪 <strong>Muscle Gain:</strong> {{ calorieNeeds.muscleGain }} kcal/day</p>
+    <p>⚡ <strong>Fat Loss:</strong> {{ calorieNeeds.fatLoss }} kcal/day</p>
+  </div>
+</div>
+
+<!-- Filters Bar -->
+<div class="flex flex-wrap gap-3 items-center bg-white p-4 rounded-xl shadow-md">
+  <input type="text"
+         [(ngModel)]="searchValue"
+         placeholder="🔍 Search food..."
+         class="border px-4 py-2 rounded-full w-64 focus:ring-2 focus:ring-emerald-500 outline-none" />
+
+  <select [(ngModel)]="selectedRegion" class="border px-4 py-2 rounded-full focus:ring-2 focus:ring-emerald-500">
+    <option value="All">🌍 All Regions</option>
+    <option value="North">🫓 North</option>
+    <option value="South">🍛 South</option>
+    <option value="West">🥗 West</option>
+    <option value="East">🥬 East</option>
+    <option value="Coastal">🐟 Coastal</option>
+    <option value="Global">🌐 Global</option>
+  </select>
+
+  <select [(ngModel)]="selectedDietType" class="border px-4 py-2 rounded-full focus:ring-2 focus:ring-emerald-500">
+    <option value="All">🍽️ All Diets</option>
+    <option value="Veg">🥦 Veg</option>
+    <option value="Non-Veg">🍗 Non-Veg</option>
+    <option value="Vegan">🌱 Vegan</option>
+    <option value="Eggetarian">🥚 Eggetarian</option>
+  </select>
+</div>
+
+<!-- Food Cards -->
+<div class="grid md:grid-cols-3 gap-6 mt-6">
+  <div *ngFor="let food of filteredFoods()" 
+       class="bg-white p-5 rounded-xl shadow hover:shadow-xl transition-all transform hover:-translate-y-1">
+    
+    <div class="flex justify-between items-center">
+      <h4 class="font-bold text-lg">{{ food.name }}</h4>
+      <span class="text-xs px-2 py-1 bg-emerald-100 text-emerald-700 rounded-full">{{ food.dietType }}</span>
+    </div>
+
+    <p class="text-sm text-gray-500 mb-3">{{ food.region }}</p>
+
+    <!-- Macro Chips -->
+    <div class="flex flex-wrap gap-2 text-sm mb-3">
+      <span class="px-2 py-1 bg-orange-100 text-orange-700 rounded-full">🔥 {{ food.calories }} kcal</span>
+      <span class="px-2 py-1 bg-blue-100 text-blue-700 rounded-full">💪 {{ food.protein }} g</span>
+      <span class="px-2 py-1 bg-yellow-100 text-yellow-700 rounded-full">🥔 {{ food.carbs }} g</span>
+      <span class="px-2 py-1 bg-pink-100 text-pink-700 rounded-full">🧈 {{ food.fat }} g</span>
+    </div>
+
+    <!-- Add to Meal -->
+    <div class="flex items-center gap-2">
+      <input type="number" min="1"
+             [(ngModel)]="selectedQuantity[food.id]"
+             [placeholder]="food.baseQuantity"
+             class="border px-2 py-1 rounded w-20 text-sm focus:ring-1 focus:ring-emerald-500" />
+
+      <select [(ngModel)]="selectedMeal[food.id]" class="border px-2 py-1 rounded text-sm focus:ring-1 focus:ring-emerald-500">
+        <option value="">➕ Select Meal</option>
+        <option *ngFor="let meal of mealTypes" [value]="meal">{{ meal | titlecase }}</option>
+      </select>
+
+      <button (click)="addToMeal(food)"
+              class="bg-emerald-500 hover:bg-emerald-600 text-white text-xs px-3 py-2 rounded-lg transition">
+        Add
+      </button>
+    </div>
+
+    <!-- Details -->
+    <a [routerLink]="['/foods', food.id]" 
+       class="block text-right text-emerald-600 hover:underline mt-2 text-sm">
+       View Details →
+    </a>
+  </div>
+</div>

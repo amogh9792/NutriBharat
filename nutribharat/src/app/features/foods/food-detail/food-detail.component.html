@@ -1,0 +1,53 @@
+<div *ngIf="food() as f" class="p-6 max-w-3xl mx-auto">
+  <!-- Back -->
+  <a routerLink="/" class="inline-flex items-center text-emerald-700 hover:underline mb-6">
+    ⬅ Back to list
+  </a>
+
+  <!-- Food Info -->
+  <div class="bg-white rounded-xl shadow-lg p-6 space-y-4 border border-gray-200">
+    <h2 class="text-3xl font-bold text-emerald-700 flex items-center gap-2">
+      {{ f.name }}
+      <span class="text-sm px-3 py-1 rounded-full"
+            [ngClass]="f.veg ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'">
+        {{ f.dietType }}
+      </span>
+    </h2>
+    <p class="text-gray-500 italic">{{ f.region }} Cuisine</p>
+
+    <!-- Quantity Input -->
+    <div class="mt-4">
+      <label class="block text-sm font-medium text-gray-700">
+        Enter Quantity ({{ f.unit }}) — Base: {{ f.baseQuantity }} {{ f.unit }}
+      </label>
+      <input type="number"
+             [(ngModel)]="quantity"
+             class="border p-2 rounded-lg w-32 focus:ring-2 focus:ring-emerald-500"
+             min="1" />
+    </div>
+
+    <!-- Nutrients Grid -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+      <div class="bg-emerald-50 p-4 rounded-lg text-center shadow-sm">
+        <p class="text-lg font-semibold text-emerald-700">{{ scaledCalories() }}</p>
+        <p class="text-sm text-gray-600">Calories</p>
+      </div>
+      <div class="bg-blue-50 p-4 rounded-lg text-center shadow-sm">
+        <p class="text-lg font-semibold text-blue-700">{{ scaledProtein() }} g</p>
+        <p class="text-sm text-gray-600">Protein</p>
+      </div>
+      <div class="bg-yellow-50 p-4 rounded-lg text-center shadow-sm">
+        <p class="text-lg font-semibold text-yellow-700">{{ scaledCarbs() }} g</p>
+        <p class="text-sm text-gray-600">Carbs</p>
+      </div>
+      <div class="bg-pink-50 p-4 rounded-lg text-center shadow-sm">
+        <p class="text-lg font-semibold text-pink-700">{{ scaledFat() }} g</p>
+        <p class="text-sm text-gray-600">Fat</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!food()" class="p-6 text-center text-gray-500">
+  Loading food details...
+</div>

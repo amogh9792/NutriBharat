@@ -1,0 +1,63 @@
+<div class="p-6 bg-white shadow rounded-lg">
+  <h2 class="text-2xl font-bold mb-4">🍴 Your Meals</h2>
+
+  <!-- Controls -->
+  <div class="flex flex-wrap items-center gap-4 mb-6">
+    <select [(ngModel)]="selectedMeal" class="border p-2 rounded-md">
+      <option *ngFor="let m of meals" [ngValue]="m">{{ m | titlecase }}</option>
+    </select>
+
+    <input type="text"
+           [(ngModel)]="mealSearch"
+           placeholder="🔍 Search food..."
+           class="border p-2 rounded-md w-56 focus:ring-2 focus:ring-emerald-500" />
+
+    <select [(ngModel)]="selectedFood" class="border p-2 rounded-md w-64">
+      <option [ngValue]="null">-- Choose food --</option>
+      <!-- ✅ Use searchFilter pipe instead of filter -->
+      <option *ngFor="let f of foodService.foods() | searchFilter:mealSearch" [ngValue]="f">
+        {{ f.name }} ({{ f.baseQuantity }}{{ f.unit }}, {{ f.calories }} kcal)
+      </option>
+    </select>
+
+    <input type="number"
+           [(ngModel)]="quantityValue"
+           min="1"
+           class="border p-2 rounded-md w-20 text-center" />
+
+    <button (click)="addMeal()"
+            class="bg-emerald-600 hover:bg-emerald-700 transition text-white font-medium px-5 py-2 rounded-md shadow">
+      Add to Meal
+    </button>
+  </div>
+
+  <!-- Meals -->
+  <div class="grid grid-cols-2 gap-6">
+    <div *ngFor="let meal of meals" class="border rounded-lg p-4 shadow-md">
+      <h3 class="font-semibold capitalize text-lg mb-3 border-b pb-1">{{ meal }}</h3>
+
+      <ul class="space-y-2">
+        <li *ngFor="let entry of getEntries(meal); let i = index"
+            class="flex justify-between items-center text-sm bg-gray-50 p-2 rounded-md">
+          <span>
+            {{ entry.food.name }} - {{ entry.quantity }}{{ entry.food.unit }}
+            ({{ (entry.food.calories * (entry.quantity / entry.food.baseQuantity)).toFixed(0) }} kcal,
+             {{ (entry.food.protein * (entry.quantity / entry.food.baseQuantity)).toFixed(1) }} g protein,
+             {{ (entry.food.carbs * (entry.quantity / entry.food.baseQuantity)).toFixed(1) }} g carbs,
+             {{ (entry.food.fat * (entry.quantity / entry.food.baseQuantity)).toFixed(1) }} g fat)
+          </span>
+          <button (click)="removeMeal(meal, i)" class="text-red-500 hover:underline">Remove</button>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Totals -->
+  <div class="mt-6 p-5 rounded-lg border bg-emerald-50 text-emerald-900 shadow-md">
+    <h3 class="font-semibold text-lg mb-2">📊 Daily Totals</h3>
+    <p>🔥 Calories: <strong>{{ mealService.dailyTotals().calories.toFixed(0) }}</strong></p>
+    <p>💪 Protein: <strong>{{ mealService.dailyTotals().protein.toFixed(1) }} g</strong></p>
+    <p>🥔 Carbs: <strong>{{ mealService.dailyTotals().carbs.toFixed(1) }} g</strong></p>
+    <p>🧈 Fat: <strong>{{ mealService.dailyTotals().fat.toFixed(1) }} g</strong></p>
+  </div>
+</div>

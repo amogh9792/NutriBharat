@@ -1,0 +1,26 @@
+<!-- Top Navbar -->
+<header class="bg-emerald-600 text-white shadow-md sticky top-0 z-10">
+  <div class="max-w-7xl mx-auto flex justify-between items-center px-6 py-3">
+    <!-- Logo -->
+    <h1 class="text-2xl font-bold tracking-wide">
+      <span class="bg-white text-emerald-600 px-3 py-1 rounded-lg shadow-sm">NutriBharat</span>
+    </h1>
+
+    <!-- Nav Links -->
+    <nav class="flex gap-8 font-medium text-lg">
+      <a routerLink="/" routerLinkActive="border-b-2 border-white pb-1">🍲 Foods</a>
+      <a routerLink="/meals" routerLinkActive="border-b-2 border-white pb-1">🍱 Meals</a>
+      <!-- ❌ Removed BMI link -->
+    </nav>
+  </div>
+</header>
+
+<!-- Routed Pages -->
+<main class="max-w-7xl mx-auto px-6 py-8">
+  <router-outlet></router-outlet>
+</main>
+
+<!-- Footer -->
+<footer class="bg-gray-50 text-gray-500 text-sm text-center py-4 border-t">
+  NutriBharat © 2025 · Built with ❤️ in Angular 17
+</footer>

@@ -1,0 +1,12 @@
+div {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+div:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+
+input, select, button {
+  margin-right: 4px;
+}
